@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<meta content="IE=edge" http-equiv="X-UA-Compatible">
+	<meta content="colorlib.com" name="author">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
+	<script src="main.js" type="text/javascript"></script>
+
+	<title>IBM Autobrochure</title>
+	<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+	
+	<script>
+		window.$ = window.jQuery = require("jquery")
+	</script>
+
+	<script>
+				const { session } = require('electron').remote
+		session.defaultSession.clearStorageData({
+		// without set origin options
+		storages: ['localstorage', 'caches', 'indexdb']
+		}, () => {
+		// verify if storages got cleared.
+		})
+	</script>
+</head>
+<body>
+
+	<!-- <input class = "awesomplete" data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" data-multiple /> -->
+	<div style="position: relative;"class="s010">
+		<!-- <h1 class="title">Autobrochure Generator</h1> -->
+		<form>
+			<div class="inner-form">
+				<div class="row">
+					<div class="column"><img id="ibmLogo" src="images/IBMLogo.svg" style="height:200px; display: block; margin-top:98px; margin-bottom: 10px; margin-right:15px; margin-left: auto; padding:10px"></div>
+					<div class="column"><img src="images/ucl_Logo.png" style="height:200px; display:block; margin-left:10px; margin-top:98px; padding:10px;"></div>
+				</div>
+				<div style="padding-bottom: 20px; padding-left: 10px;">
+					<h3>Select spreadsheets to work with:</h3>
+					<form action="/action_page.php">
+						<label for="csvFiles">Select files:</label> <input accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="csvFiles"  name="csvFiles" type="file"><br>
+						<br>
+						<button id="submitButton" type="button" onclick="getFiles()" value="Submit">Submit</button>
+					</form>
+				</div>
+				<div >
+					<div>
+						<input class="searchbox" id="input" placeholder="Type Keywords" type="text" data-multiple>
+						<!-- <div>
+							<svg height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+							<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+						</div> -->
+					</div>
+					<br>
+					
+				</div>
+				<div style="display: none" id="advance-search" class="advance-search">
+					<span class="desc">ADVANCED SEARCH</span>
+					<div class="row">
+						<div class="input-field">
+							<div class="input-select">
+								<!-- <span class= "custom-dropdown"> -->
+								<select class = "select-css" id="searchfield-1">
+									<option value="">
+										Module Code
+									</option>
+									
+								</select>
+							<!-- </span> -->
+							</div>
+						</div>
+						<div class="input-field">
+							<div class="input-select">
+								<select class = "select-css" data-trigger="" id="searchfield-2" >
+									<option>
+										Academic Supervisor
+									</option>
+									
+								</select>
+							</div>
+						</div>
+						<div class="input-field">
+							<div class="input-select">
+								<select class = "select-css" data-trigger="" id="searchfield-3" >
+									<option>
+										Project Author
+									</option>
+									
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row second">
+						<div class="input-field">
+							<div class="input-select">
+								<select class = "select-css" data-trigger="" id="searchfield-4" >
+									<option>
+										Client Name
+									</option>
+									
+								</select>
+							</div>
+						</div>
+						<div class="input-field">
+							<div class="input-select">
+								<select class = "select-css" data-trigger="" id="searchfield-5" >
+									<option>
+										Technologies Used
+									</option>
+									
+								</select>
+							</div>
+						</div>
+						<div class="input-field">
+							<div class="input-select">
+								<select class = "select-css" data-trigger="" id="searchfield-6" >
+									<option value="">
+										Field Area
+									</option>
+									
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row third">
+						<div class="input-field">
+							<div class="result-count">
+								<span id="noOfResults"></span>
+							</div>
+							<div class="group-btn">
+							
+                	<!-- <input type ="button" class="btn-delete" onclick="resetFieldValues()" value="RESET"></button> -->
+            		<input class="btn-search" id="search_button" type="button" value="SEARCH" onclick="searcher()">
+							</div>
+						</div>
+					</div>
+				</div>
+		<br>
+				<!-- RESULTS -->
+				<div style="display: none" id="docreate" class="advance-search">
+					<span class="desc">PREVIEW AND DOCUMENT SETTINGS</span>
+					<div style="display:none; max-height:500px; overflow-x:auto; overflow-y: auto;" id = "showData"></div>
+					<br>
+					<div class="row second" style="margin-bottom: 20px;">
+						<div class="input-field">
+							<div class="input-select">
+								<select class = "select-css" data-trigger="" id="paper_size" >
+									<option selected disabled value = "default">
+										Paper Size
+									</option>
+									<option>
+										A3
+									</option>
+									<option>
+										A4
+									</option>
+									<option>
+										A5
+									</option>
+									
+								</select>
+							</div>
+						</div>
+						<div class="input-field">
+							<div class="input-select">
+								<select class = "select-css" data-trigger="" id="orientation" >
+									<option selected disabled value = "default">
+										Orientation
+									</option>
+									
+									<option>
+										Portrait
+									</option>
+									<option>
+										Landscape
+									</option>
+								</select>
+							</div>
+						</div>
+						<div class="input-field">
+							<div id="folderSelect" class="input-select">
+								<!-- <br style="display: block; margin: 100px;"> --><div style="cursor:pointer; padding-top:7px;padding: 8px; padding-left: 15px; padding-right:45px;background-color: rgb(102,102,102); border-radius: 10px;">
+								<label style="cursor:pointer; font-size: 14px; color:black; "for="ctrl">Select Template Folder</label>
+								</div>
+								<input style="background: white; color:black; visibility: hidden;" type="file" id="ctrl" webkitdirectory directory multiple/>
+
+							</div>
+							<div id="templateSelect" style="display: none;" class="input-select">
+								<select disabled class = "select-css" data-trigger="" id="template" >
+									<option selected disabled value="default">
+										Template
+									</option>
+								</select>
+								
+							</div>
+						</div>
+					</div>
+					<div style="padding-top:0"class = "row">
+						<div class ="input-field">
+							<!-- <div class="input-select"> -->
+							<label style="font-size: 15px; padding-left: 3px;"for="document_title">Document Title:</label>
+							<input style="font-size: 15px; padding-top: 10px; border-radius: 8px; height:35px;padding-left:10px" type="text" id="document_title" name="document_title">
+						</div>
+						<div class ="input-field">
+							<!-- <div class="input-select"> -->
+							<label style="font-size: 15px; padding-left: 3px;"for="department">Department:</label>
+							<input style="font-size: 15px; padding-top: 10px; border-radius: 8px; height:35px;padding-left:10px" type="text" id="department" name="document_title">
+						</div>
+						<div class ="input-field">
+							<!-- <div class="input-select"> -->
+							<label style="font-size: 15px; padding-left: 3px;"for="document_author">Document Author:</label>
+							<input style="font-size: 15px; padding-top: 10px; border-radius: 8px; height:35px;padding-left:10px" type="text" id="document_author" name="document_title">
+						</div>
+					</div>
+					<div class="row third">
+						<div class="input-field">
+							<div>
+								<form>
+									<label  for="imageAdd">Select images:</label> <input style="background: white; color:black; padding-top: 10px; padding-left: 0px;" accept=".png, .jpg, .jpeg" id="imageAdd" multiple name="imageAdd" type="file"><br>
+									
+								</form>
+							</div>
+								<!-- <input style="background: white; color:black; visibility: hidden;" type="file" id="ctrl" webkitdirectory directory multiple/> -->
+
+						<div  style="font-family: IBMRegular, sans-serif; height:40px; padding-top: 4px; text-align: center; width: 100px;cursor:pointer; padding-top:10px; background-color: rgb(102,102,102); border-radius: 8px;">
+
+								<label style="cursor:pointer; font-size: 14px; color:white; "for="generate_button">GENERATE</label>
+							
+								<input id="generate_button" style="background: white; color:black; visibility: hidden;" type="file"  webkitdirectory directory multiple/>
+
+
+            					<!-- <input class="btn-search" id="generate_button" type="file" value="GENERATE"> -->
+							</div>
+						</div>
+					</div>
+					
+			</div>
+			<br><br><br><br>
+				</div>
+
+				
+				
+				
+		</form>
+		<p style="position: absolute;
+		bottom: 20px;  
+		
+		">Developed by Christian Martin Rios</p>
+		<p style="position: absolute; bottom:0;">
+		Supervised by Dr Dean Mohamedally & John McNamara </p>
+	</div>
+
+	<script src="./node_modules/awesomplete/awesomplete.js" async></script>
+
+	<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+	<!-- <script src="js/choices.js"></script>  -->
+	<script src="js/jqueryCode.js"></script>
+	<script src="js/docuCreate.js"></script>
+
+
+	<script type="text/javascript" src="./node_modules/jszip/dist/jszip.min.js"></script>
+	<!-- <script type="text/javascript" src="./node_modules/jszip-utils/dist/jszip-utils-ie.min.js"></script> -->
+	<!--[if IE]>
+	<script type="text/javascript" src="lib/jszip-utils-ie.min.js"></script>
+	<![endif]-->
+	<script type="text/javascript" src="./node_modules/docxtemplater/build/docxtemplater.min.js"></script>
+	<script type="text/javascript" src="./node_modules/file-saver/dist/FileSaver.min.js"></script>
+
+  <link rel="stylesheet" href="./node_modules/awesomplete/awesomplete.css" />
+  
+  <script src="main.js" type="text/javascript"></script>
+  <!-- <script src="js/documentCreate.js" type="module"></script> -->
+  <!-- <script src="node_modules/jquery/src/ajax.js"></script> -->
+  
+</body>
+
+</html>
