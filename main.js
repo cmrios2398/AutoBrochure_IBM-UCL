@@ -448,14 +448,18 @@ function searcher() {
 
   localStorage.setItem("brochureData",JSON.stringify(brochureData));
 
+  var nResults = document.getElementById("noOfResults");
+  nResults.innerHTML = brochureData.length + " results";
+
   console.log(brochureData)
   if(isEmptyObject(brochureData)){
     localStorage.setItem("brochureData",JSON.stringify(jsonAllData));
+    nResults.innerHTML = jsonAllData.length + " results";
+
   }
 
 
-  var nResults = document.getElementById("noOfResults");
-  nResults.innerHTML = brochureData.length + " results";
+ 
   // var number = document.createTextNode(brochureData.length);
   // nResults.appendChild(number);
 
