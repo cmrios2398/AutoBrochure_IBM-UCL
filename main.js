@@ -76,7 +76,44 @@ app.on('before-quit', () => {
 // import { Document, Packer } from "docx";
 // import { saveAs } from "file-saver";
 
+function findTemplatesFolder(url){
 
+  var fs = require("fs");
+
+  var test = [];
+  test = fs.readdirSync(url)
+  console.log(test)
+
+  console.log(url.substr(url.lastIndexOf("/"),url.length))
+  if(url.includes("/")){ // macOS/Linux
+    if(!(url.substr(url.lastIndexOf("/"),url.length) == "/templates")){
+      url = url.substr(0,url.lastIndexOf("/"));
+      if(!(url.substr(url.lastIndexOf("/"),url.length) == "/templates")){
+        url = url.substr(0,url.lastIndexOf("/"));
+
+        test = fs.readdirSync(url)
+        if(!(test.includes("A3") && test.includes("A4") && test.includes("A5"))){
+          alert("Cannot read templates folder. \nMake sure your templates folder includes A3, A4 and A5 subfolders.")
+        }
+      }
+    }
+  }
+  else{ // Windows
+    if(!(url.substr(url.lastIndexOf("\\"),url.length) == "\\templates")){
+      url = url.substr(0,url.lastIndexOf("/"));
+      if(!(url.substr(url.lastIndexOf("\\"),url.length) == "\\templates")){
+        url = url.substr(0,url.lastIndexOf("\\"));
+
+        test = fs.readdirSync(url)
+        if(!(test.includes("A3") && test.includes("A4") && test.includes("A5"))){
+          alert("Cannot read templates folder. \nMake sure your templates folder includes A3, A4 and A5 subfolders.")
+        }
+      }
+    }
+  }
+
+  return url;
+}
 
 
 
@@ -85,8 +122,6 @@ function changeTemplateOptions(){
 
   var url = JSON.parse(localStorage.getItem("templateFolder"));
   console.log(url)
-
-
 
   console.log(url)
 
@@ -103,6 +138,11 @@ function changeTemplateOptions(){
   var template = $("#template").val();
 
   var templateOptions = [];
+
+  
+
+  url = findTemplatesFolder(url);
+
 
   console.log(paper_size)
   console.log(orientation)
