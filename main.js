@@ -100,7 +100,7 @@ function findTemplatesFolder(url){
   }
   else{ // Windows
     if(!(url.substr(url.lastIndexOf("\\"),url.length) == "\\templates")){
-      url = url.substr(0,url.lastIndexOf("/"));
+      url = url.substr(0,url.lastIndexOf("\\"));
       if(!(url.substr(url.lastIndexOf("\\"),url.length) == "\\templates")){
         url = url.substr(0,url.lastIndexOf("\\"));
 
