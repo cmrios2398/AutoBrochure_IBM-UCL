@@ -121,9 +121,7 @@ function changeTemplateOptions(){
   var fs = require("fs");
 
   var url = JSON.parse(localStorage.getItem("templateFolder"));
-  console.log(url)
-
-  console.log(url)
+  
 
   if(url.includes("/")){
     url = url.substr(0,url.lastIndexOf("/"));
@@ -204,6 +202,8 @@ function generateWordDocument(){
   else{
     url = url.substr(0, url.lastIndexOf("\\"));
   }
+  url = findTemplatesFolder(url);
+  
   var fs = require("fs")
   var brochureData = JSON.parse(localStorage.getItem("brochureData"));
   var keys = JSON.parse(localStorage.getItem("keys"));
