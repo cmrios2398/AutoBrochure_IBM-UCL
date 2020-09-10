@@ -198,8 +198,12 @@ function generateWordDocument(){
   var url = JSON.parse(localStorage.getItem("templateFolder"));
   var outputURL = JSON.parse(localStorage.getItem("outputFolder"));
 
-
-  url = url.substr(0, url.lastIndexOf("/"));
+  if(url.includes("/")){
+    url = url.substr(0, url.lastIndexOf("/"));
+  }
+  else{
+    url = url.substr(0, url.lastIndexOf("\\"));
+  }
   var fs = require("fs")
   var brochureData = JSON.parse(localStorage.getItem("brochureData"));
   var keys = JSON.parse(localStorage.getItem("keys"));
